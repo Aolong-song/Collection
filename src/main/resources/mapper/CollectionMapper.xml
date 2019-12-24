@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.collect.mapper.CollectionMapper">
+    <resultMap id="CollectItemPo" type="com.example.collect.domain.CollectItemPo">
+        <id column="id" property="id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+    <select id="list" parameterType="Integer" resultType="com.example.collect.domain.CollectItem">
+        select  id,
+                goods_id,
+                user_id
+        from    oomall_collect_item where user_id=#{userId}
+    </select>
+    <select id="select" parameterType="integer" resultType="com.example.collect.domain.CollectItem">
+        select  id,
+                goods_id,
+                user_id
+        from    oomall_collect_item
+        where   id = #{id}
+    </select>
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into oomall_collect_item(
+            goods_id,
+            user_id,
+            gmt_create,
+            gmt_modified
+        )values(
+            #{goodsId},
+            #{userId},
+            CURRENT_TIMESTAMP ,
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        delete from    oomall_collect_item
+        where   id = #{id}
+    </delete>
+    <select id="beExist" parameterType="com.example.collect.domain.CollectItemPo" resultMap="CollectItemPo">
+        select  id,
+                goods_id,
+                user_id
+        from    oomall_collect_item
+        where   goods_id=#{goodsId} and user_id = #{userId}
+    </select>
+</mapper>
